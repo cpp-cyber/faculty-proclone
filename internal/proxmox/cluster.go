@@ -171,7 +171,7 @@ func (s *ProxmoxService) aggregateClusterResourceUsage(nodes []NodeResourceUsage
 	}
 
 	// Add shared storage (NAS)
-	nasUsed, nasTotal := getStorage(&resources, "mufasa-proxmox")
+	nasUsed, nasTotal := getStorage(&resources, s.Config.StorageID)
 	cluster.StorageTotal += int64(nasTotal)
 	cluster.StorageUsed += int64(nasUsed)
 

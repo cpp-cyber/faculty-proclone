@@ -33,5 +33,5 @@ func RegisterRoutes(r *gin.Engine, authHandler *handlers.AuthHandler, proxmoxHan
 	// User/group management and system operations
 	admin := r.Group("/api/v1/admin")
 	admin.Use(middleware.AdminRequired(authService))
-	registerAdminRoutes(admin, authHandler, proxmoxHandler, cloningHandler, dashboardHandler)
+	registerAdminRoutes(admin, proxmoxHandler, cloningHandler, dashboardHandler)
 }

@@ -7,7 +7,7 @@ import (
 
 // registerAdminRoutes defines all routes accessible ONLY to admin users
 // Template operations have been moved to creator routes (accessible by both admins and creators)
-func registerAdminRoutes(g *gin.RouterGroup, authHandler *handlers.AuthHandler, proxmoxHandler *handlers.ProxmoxHandler, cloningHandler *handlers.CloningHandler, dashboardHandler *handlers.DashboardHandler) {
+func registerAdminRoutes(g *gin.RouterGroup, proxmoxHandler *handlers.ProxmoxHandler, cloningHandler *handlers.CloningHandler, dashboardHandler *handlers.DashboardHandler) {
 	// Admin dashboard and cluster management
 	g.GET("/dashboard", dashboardHandler.GetAdminDashboardStatsHandler)
 	g.GET("/cluster", proxmoxHandler.GetClusterResourceUsageHandler)
@@ -17,8 +17,6 @@ func registerAdminRoutes(g *gin.RouterGroup, authHandler *handlers.AuthHandler, 
 
 	// User management (admin only)
 	g.GET("/users", proxmoxHandler.GetUsersHandler)
-	g.POST("/users/create", authHandler.CreateUsersHandler)
-	g.POST("/users/delete", authHandler.DeleteUsersHandler)
 	g.POST("/user/groups", proxmoxHandler.SetUserGroupsHandler)
 
 	// Group management (admin only)

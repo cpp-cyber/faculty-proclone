@@ -273,7 +273,7 @@ func (cs *CloningService) CloneTemplate(req CloneRequest) error {
 	// 9. Configure VNet of all VMs
 	log.Printf("Configuring VNets for %d targets", len(req.Targets))
 	for _, target := range req.Targets {
-		vnetName := fmt.Sprintf("kamino%d", target.PodNumber)
+		vnetName := fmt.Sprintf("kmno%d", target.PodNumber)
 		log.Printf("Setting VNet %s for pool %s (target: %s)", vnetName, target.PoolName, target.Name)
 		err = cs.ProxmoxService.SetPodVnet(target.PoolName, vnetName)
 		if err != nil {

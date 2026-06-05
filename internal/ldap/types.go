@@ -12,8 +12,6 @@ import (
 
 type Service interface {
 	// User Management
-	CreateAndRegisterUser(userInfo UserRegistrationInfo) error
-	DeleteUser(username string) error
 	GetUserDN(username string) (string, error)
 
 	// Connection Management
@@ -56,8 +54,3 @@ type CreateRequest struct {
 // =================================================
 // Users
 // =================================================
-
-type UserRegistrationInfo struct {
-	Username string `json:"username" validate:"required,min=1,max=20"`
-	Password string `json:"password" validate:"required,min=8,max=128"`
-}

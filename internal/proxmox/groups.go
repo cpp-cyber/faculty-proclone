@@ -5,7 +5,6 @@ import (
 	"regexp"
 	"slices"
 	"strings"
-
 	"github.com/cpp-cyber/proclone/internal/tools"
 )
 

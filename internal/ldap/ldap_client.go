@@ -230,39 +230,6 @@ func (c *Client) HealthCheck() error {
 	return err
 }
 
-func (c *Client) IsConnected() bool {
-	c.mutex.RLock()
-	defer c.mutex.RUnlock()
-	return c.connected
-}
-
-func (c *Client) Search(searchRequest *ldap.SearchRequest) (*ldap.SearchResult, error) {
-	var result *ldap.SearchResult
-
-	err := c.executeWithRetry(func() error {
-		c.mutex.RLock()
-		conn := c.conn
-		c.mutex.RUnlock()
-
-		if conn == nil {
-			return fmt.Errorf("no LDAP connection available")
-		}
-
-		res, err := conn.Search(searchRequest)
-		if err != nil {
-			return fmt.Errorf("failed to search: %v", err)
-		}
-		result = res
-		return nil
-	}, 2) // Retry up to 2 times
-
-	if err != nil {
-		return nil, err
-	}
-
-	return result, nil
-}
-
 // SearchEntry performs an LDAP search and returns the first entry
 func (c *Client) SearchEntry(req *ldap.SearchRequest) (*ldap.Entry, error) {
 	var result *ldap.SearchResult
@@ -292,84 +259,6 @@ func (c *Client) SearchEntry(req *ldap.SearchRequest) (*ldap.Entry, error) {
 		return nil, nil
 	}
 	return result.Entries[0], nil
-}
-
-func (c *Client) Add(addRequest *ldap.AddRequest) error {
-	return c.executeWithRetry(func() error {
-		c.mutex.RLock()
-		conn := c.conn
-		c.mutex.RUnlock()
-
-		if conn == nil {
-			return fmt.Errorf("no LDAP connection available")
-		}
-
-		return conn.Add(addRequest)
-	}, 2) // Retry up to 2 times
-}
-
-func (c *Client) Modify(modifyRequest *ldap.ModifyRequest) error {
-	return c.executeWithRetry(func() error {
-		c.mutex.RLock()
-		conn := c.conn
-		c.mutex.RUnlock()
-
-		if conn == nil {
-			return fmt.Errorf("no LDAP connection available")
-		}
-
-		return conn.Modify(modifyRequest)
-	}, 2) // Retry up to 2 times
-}
-
-func (c *Client) Del(delRequest *ldap.DelRequest) error {
-	return c.executeWithRetry(func() error {
-		c.mutex.RLock()
-		conn := c.conn
-		c.mutex.RUnlock()
-
-		if conn == nil {
-			return fmt.Errorf("no LDAP connection available")
-		}
-
-		return conn.Del(delRequest)
-	}, 2) // Retry up to 2 times
-}
-
-func (c *Client) ModifyDN(modifyDNRequest *ldap.ModifyDNRequest) error {
-	return c.executeWithRetry(func() error {
-		c.mutex.RLock()
-		conn := c.conn
-		c.mutex.RUnlock()
-
-		if conn == nil {
-			return fmt.Errorf("no LDAP connection available")
-		}
-
-		return conn.ModifyDN(modifyDNRequest)
-	}, 2) // Retry up to 2 times
-}
-
-func (c *Client) Bind(username, password string) error {
-	err := c.executeWithRetry(func() error {
-		c.mutex.RLock()
-		conn := c.conn
-		c.mutex.RUnlock()
-
-		if conn == nil {
-			return fmt.Errorf("no LDAP connection available")
-		}
-
-		bindErr := conn.Bind(username, password)
-		if bindErr != nil {
-		} else {
-		}
-		return bindErr
-	}, 2) // Retry up to 2 times
-
-	if err != nil {
-	}
-	return err
 }
 
 func (c *Client) SimpleBind(username, password string) error {

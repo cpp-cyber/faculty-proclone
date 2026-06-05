@@ -31,4 +31,3 @@ type AuthService struct {
 
 type User = proxmox.User
 type Group = proxmox.Group
-type UserRegistrationInfo = ldap.UserRegistrationInfo
